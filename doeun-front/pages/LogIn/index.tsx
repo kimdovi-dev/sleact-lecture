@@ -12,6 +12,7 @@ const LogIn = () => {
   const [logInError, setLogInError] = useState(false);
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
+
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
@@ -25,7 +26,7 @@ const LogIn = () => {
           },
         )
         .then((response) => {
-          revalidate();
+          mutate(response.data, false); //OPTIMISTIC UI   <---> PESSIMISTIC UI
         })
         .catch((error) => {
           setLogInError(error.response?.data?.statusCode === 401);
@@ -39,8 +40,12 @@ const LogIn = () => {
   }
 
   if (data) {
-    return <Redirect to="/workspace/sleact/channel/일반" />;
+    return <Redirect to="/workspace/channel" />;
   }
+
+  // if (data) {
+  //   return <Redirect to="/workspace/sleact/channel/일반" />;
+  // }
 
   // console.log(error, userData);
   // if (!error && userData) {
